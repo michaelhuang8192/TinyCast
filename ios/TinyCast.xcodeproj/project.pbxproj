@@ -58,10 +58,10 @@
 		605AE50721274C2D006F5317 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50621274C2D006F5317 /* QuartzCore.framework */; };
 		605AE50921274C3B006F5317 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50821274C3A006F5317 /* SystemConfiguration.framework */; };
 		605AE50B21274C44006F5317 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50A21274C44006F5317 /* UIKit.framework */; };
+		6067942F21390092003417FF /* libConnectSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6067942821390083003417FF /* libConnectSDK.a */; };
+		60679433213902DA003417FF /* ConnectSDKSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 60679432213902DA003417FF /* ConnectSDKSearch.m */; };
 		60875D90210BE753006CC977 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		60B40FE32128F92700D0DBDA /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE22128F92700D0DBDA /* GoogleCast.framework */; };
 		60B40FE52128F93500D0DBDA /* SmartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE42128F93400D0DBDA /* SmartView.framework */; };
-		60B40FE62128F98000D0DBDA /* SmartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE42128F93400D0DBDA /* SmartView.framework */; };
 		60B40FE72128F98000D0DBDA /* SmartView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE42128F93400D0DBDA /* SmartView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		60B40FE82128F98300D0DBDA /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE22128F92700D0DBDA /* GoogleCast.framework */; };
 		60B40FE92128F98300D0DBDA /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE22128F92700D0DBDA /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -69,6 +69,8 @@
 		60B40FF2212A112F00D0DBDA /* CastDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B40FF1212A112F00D0DBDA /* CastDevice.m */; };
 		60CF7AE7212A3FB50007C227 /* ChromeCastDeviceSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CF7AE6212A3FB50007C227 /* ChromeCastDeviceSearch.swift */; };
 		60CF7B2821325A880007C227 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CF7B2721325A880007C227 /* HttpRequest.swift */; };
+		60F025102138FF55003B8EB2 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609F7E852136228D008854FB /* libz.tbd */; };
+		60F025112138FF69003B8EB2 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609F7E8321362267008854FB /* libicucore.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8994B77C3BC34D6E8059B8C7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AA4E4EF0EE84DA6B7056CE9 /* Octicons.ttf */; };
 		9275A262CEC8465CA111580C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C40FDAA0D6C94590AAD4B226 /* SimpleLineIcons.ttf */; };
@@ -330,6 +332,34 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		6067942721390083003417FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EA61EB1018FE485B00D75696;
+			remoteInfo = ConnectSDK;
+		};
+		6067942921390083003417FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 44375E7F1A25265600D2F6DE;
+			remoteInfo = ConnectSDKTests;
+		};
+		6067942B21390083003417FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 44E98FAD1B1E84880043BC70;
+			remoteInfo = ConnectSDKIntegrationTests;
+		};
+		6067942D21390083003417FF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 44BEBF6C1B4F341A00DA1A1D;
+			remoteInfo = ConnectSDKAcceptanceTests;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -415,6 +445,8 @@
 		605AE50621274C2D006F5317 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		605AE50821274C3A006F5317 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		605AE50A21274C44006F5317 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6067941F21390083003417FF /* ConnectSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ConnectSDK.xcodeproj; path = "../../Connect-SDK-iOS-Lite/ConnectSDK.xcodeproj"; sourceTree = "<group>"; };
+		60679432213902DA003417FF /* ConnectSDKSearch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectSDKSearch.m; sourceTree = "<group>"; };
 		609F7E8321362267008854FB /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		609F7E852136228D008854FB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		60B40FE12128F0F300D0DBDA /* CastDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastDevice.h; sourceTree = "<group>"; };
@@ -448,6 +480,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6067942F21390092003417FF /* libConnectSDK.a in Frameworks */,
+				60F025112138FF69003B8EB2 /* libicucore.tbd in Frameworks */,
+				60F025102138FF55003B8EB2 /* libz.tbd in Frameworks */,
 				605AE50B21274C44006F5317 /* UIKit.framework in Frameworks */,
 				60B40FE82128F98300D0DBDA /* GoogleCast.framework in Frameworks */,
 				605AE50921274C3B006F5317 /* SystemConfiguration.framework in Frameworks */,
@@ -455,7 +490,6 @@
 				605AE50521274C23006F5317 /* MediaToolbox.framework in Frameworks */,
 				605AE50321274C15006F5317 /* MediaPlayer.framework in Frameworks */,
 				605AE50121274C04006F5317 /* MediaAccessibility.framework in Frameworks */,
-				60B40FE32128F92700D0DBDA /* GoogleCast.framework in Frameworks */,
 				605AE4FD21274BC9006F5317 /* Foundation.framework in Frameworks */,
 				605AE4FB21274BC1006F5317 /* CoreText.framework in Frameworks */,
 				60B40FE52128F93500D0DBDA /* SmartView.framework in Frameworks */,
@@ -474,7 +508,6 @@
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
-				60B40FE62128F98000D0DBDA /* SmartView.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 			);
@@ -659,6 +692,7 @@
 		60110DC32126871E0064D4C3 /* CastDeviceModule */ = {
 			isa = PBXGroup;
 			children = (
+				60CF7B2721325A880007C227 /* HttpRequest.swift */,
 				605AE51C2127572C006F5317 /* provider */,
 				60110D98212682730064D4C3 /* CastDeviceModule.h */,
 				60110DBF212686EB0064D4C3 /* CastDeviceModule.m */,
@@ -674,9 +708,20 @@
 			children = (
 				60B40FEF2129081E00D0DBDA /* SamsungDeviceSearch.swift */,
 				60CF7AE6212A3FB50007C227 /* ChromeCastDeviceSearch.swift */,
-				60CF7B2721325A880007C227 /* HttpRequest.swift */,
+				60679432213902DA003417FF /* ConnectSDKSearch.m */,
 			);
 			path = provider;
+			sourceTree = "<group>";
+		};
+		6067942021390083003417FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6067942821390083003417FF /* libConnectSDK.a */,
+				6067942A21390083003417FF /* ConnectSDKTests.xctest */,
+				6067942C21390083003417FF /* ConnectSDKIntegrationTests.xctest */,
+				6067942E21390083003417FF /* ConnectSDKAcceptanceTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		60875DC2210BEA09006CC977 /* Recovered References */ = {
@@ -698,6 +743,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6067941F21390083003417FF /* ConnectSDK.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -862,7 +908,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 920;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -897,6 +943,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 6067942021390083003417FF /* Products */;
+					ProjectRef = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1195,6 +1245,34 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6067942821390083003417FF /* libConnectSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libConnectSDK.a;
+			remoteRef = 6067942721390083003417FF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6067942A21390083003417FF /* ConnectSDKTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ConnectSDKTests.xctest;
+			remoteRef = 6067942921390083003417FF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6067942C21390083003417FF /* ConnectSDKIntegrationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ConnectSDKIntegrationTests.xctest;
+			remoteRef = 6067942B21390083003417FF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6067942E21390083003417FF /* ConnectSDKAcceptanceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ConnectSDKAcceptanceTests.xctest;
+			remoteRef = 6067942D21390083003417FF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1315,6 +1393,7 @@
 				60110DC0212686EB0064D4C3 /* CastDeviceModule.m in Sources */,
 				60CF7B2821325A880007C227 /* HttpRequest.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				60679433213902DA003417FF /* ConnectSDKSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1714,6 +1793,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
