@@ -33,6 +33,12 @@
 - (void)isReady:(void (^)(FunctionCallResult<NSNumber *> *))cb;
 - (BOOL)isSameDevice:(id<CastDevice>)device;
 
+@optional
+- (void)play:(void (^)(FunctionCallResult<NSNumber *> *))cb;
+- (void)pause:(void (^)(FunctionCallResult<NSNumber *> *))cb;
+- (void)seek:(NSNumber *)position cb:(void (^)(FunctionCallResult<NSNumber *> *))cb;
+- (void)getStatus:(void (^)(FunctionCallResult<NSDictionary *> *))cb;
+
 @end
 
 

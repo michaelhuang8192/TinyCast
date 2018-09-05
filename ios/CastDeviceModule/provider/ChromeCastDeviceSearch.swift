@@ -6,6 +6,7 @@
 //  Copyright © 2018 Facebook. All rights reserved.
 //
 
+
 import Foundation
 import GoogleCast
 
@@ -88,13 +89,59 @@ extension ChromeCastDeviceSearch : CastDeviceSearch {
   
 }
 
+private class RequestCallback {
+  let callback: (Bool?, Error?) -> Void;
+  
+  init(_ callback: @escaping (Bool?, Error?) -> Void) {
+    self.callback = callback;
+  }
+  
+  func handleCallback(_ status: Bool? , error: Error?) {
+    self.callback(status, error);
+  }
+}
 
-class ChromeCastDevice : NSObject, CastDevice {
+private class RequestCallbackManager : NSObject, GCKRequestDelegate {
+  var requests: [NSInteger: RequestCallback] = [:];
+  
+  func addRequest(_ request: GCKRequest, callback: @escaping (Bool?, Error?) -> Void) {
+    request.delegate = self;
+    requests[request.requestID] = RequestCallback(callback);
+  }
+  
+  func clear() {
+    requests.removeAll();
+  }
+  
+  func requestDidComplete(_ request: GCKRequest) {
+    if let requestCallback = requests.removeValue(forKey: request.requestID) {
+      request.delegate = nil;
+      requestCallback.handleCallback(true, error: nil);
+    }
+  }
+  
+  func request(_ request: GCKRequest, didFailWithError error: GCKError) {
+    if let requestCallback = requests.removeValue(forKey: request.requestID) {
+      request.delegate = nil;
+      requestCallback.handleCallback(nil, error: error);
+    }
+  }
+  
+  func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason) {
+    if let requestCallback = requests.removeValue(forKey: request.requestID) {
+      request.delegate = nil;
+      requestCallback.handleCallback(nil, error: request.error);
+    }
+  }
+}
+
+private class ChromeCastDevice : NSObject, CastDevice {
   let device : GCKDevice?;
-  var onPlayMediaCallback: ((FunctionCallResult<NSNumber>?) -> Void)?;
+  let requestCallbackManager: RequestCallbackManager;
   
   init(_ device: GCKDevice) {
     self.device = device;
+    self.requestCallbackManager = RequestCallbackManager();
   }
   
   func getId() -> String! {
@@ -102,7 +149,7 @@ class ChromeCastDevice : NSObject, CastDevice {
   }
   
   func getName() -> String! {
-    return self.device?.friendlyName;
+    return (self.device?.friendlyName ?? "") + " (GoogleSDK)";
   }
   
   func playMedia(_ url: String!, callback cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
@@ -116,17 +163,16 @@ class ChromeCastDevice : NSObject, CastDevice {
       if(media == nil || session == nil) {
         cb(FunctionCallResult<NSNumber>(result: nil, error: NSError(domain: "com.tinappsdev.TinyCast", code: 9999)));
       } else {
-        self.onPlayMediaCallback?(FunctionCallResult<NSNumber>(result: false, error: nil));
-        self.onPlayMediaCallback = cb;
         let request = session?.remoteMediaClient?.loadMedia(media!);
-        request?.delegate = self;
+        self.handleResult(request, cb: cb);
       }
     }
   }
   
   func disconnect() {
     DispatchQueue.main.async {
-      GCKCastContext.sharedInstance().sessionManager.endSessionAndStopCasting(false)
+      GCKCastContext.sharedInstance().sessionManager.endSessionAndStopCasting(false);
+      self.requestCallbackManager.clear();
     }
   }
   
@@ -151,30 +197,74 @@ class ChromeCastDevice : NSObject, CastDevice {
     return false;
   }
   
+  func handleResult(_ request: GCKRequest?, cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    if let request = request {
+      self.requestCallbackManager.addRequest(request, callback: { (status, error) in
+        if(error != nil) {
+          cb(FunctionCallResult<NSNumber>(result: false, error: error));
+        } else {
+          cb(FunctionCallResult<NSNumber>(result: status, error: nil));
+        }
+      });
+    } else {
+      cb(FunctionCallResult<NSNumber>(result: nil, error: NSError(domain: "com.tinappsdev.TinyCast", code: 9999)));
+    }
+  }
+  
+  func play(_ cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    DispatchQueue.main.async {
+      let session = GCKCastContext.sharedInstance().sessionManager.currentSession;
+      let request = session?.remoteMediaClient?.play();
+      self.handleResult(request, cb: cb);
+    }
+  }
+  
+  func pause(_ cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    DispatchQueue.main.async {
+      let session = GCKCastContext.sharedInstance().sessionManager.currentSession;
+      let request = session?.remoteMediaClient?.pause();
+      self.handleResult(request, cb: cb);
+    }
+  }
+  
+  func seek(_ position: NSNumber!, cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    DispatchQueue.main.async {
+      let option = GCKMediaSeekOptions();
+      option.interval = position.doubleValue;
+      let session = GCKCastContext.sharedInstance().sessionManager.currentSession;
+      let request = session?.remoteMediaClient?.seek(with: option);
+      self.handleResult(request, cb: cb);
+    }
+  }
+  
+  func getStatus(_ cb: ((FunctionCallResult<NSDictionary>?) -> Void)!) {
+    DispatchQueue.main.async {
+      if let session = GCKCastContext.sharedInstance().sessionManager.currentSession,
+        let status = session.remoteMediaClient?.mediaStatus
+      {
+        var res: [String : Any] = [:];
+        
+        if(status.playerState == GCKMediaPlayerState.playing) {
+          res["state"] = "playing";
+        } else if(status.playerState == GCKMediaPlayerState.paused) {
+          res["state"] = "paused";
+        } else if(status.playerState == GCKMediaPlayerState.idle) {
+          res["state"] = "stop";
+        }
+        
+        if let info = status.mediaInformation {
+          res["duration"] = info.streamDuration;
+        }
+        
+        res["position"] = status.streamPosition;
+        
+        cb(FunctionCallResult<NSDictionary>(result: res, error: nil));
+        
+      } else {
+        cb(FunctionCallResult<NSDictionary>(result: nil, error: nil));
+      }
+    }
+  }
+  
 }
-
-extension ChromeCastDevice: GCKRequestDelegate {
-  
-  func requestDidComplete(_ request: GCKRequest) {
-    let cb = self.onPlayMediaCallback;
-    self.onPlayMediaCallback = nil;
-    cb?(FunctionCallResult<NSNumber>(result:true, error:nil));
-  }
-  
-  func request(_ request: GCKRequest, didFailWithError error: GCKError) {
-    let cb = self.onPlayMediaCallback;
-    self.onPlayMediaCallback = nil;
-    cb?(FunctionCallResult<NSNumber>(result:nil, error:error));
-  }
-  
-  func request(_ request: GCKRequest, didAbortWith abortReason: GCKRequestAbortReason) {
-    let cb = self.onPlayMediaCallback;
-    self.onPlayMediaCallback = nil;
-    cb?(FunctionCallResult<NSNumber>(result:false, error:nil));
-  }
-  
-}
-
-
-
 

@@ -70,7 +70,6 @@ class Category extends ScreenComponent {
           //console.log(">>>>url", url, body, options);
           return RNSmartTvController.openUrl(url, body, options)
           .then(res => {
-            console.log(">>>res", res);
             return res;
           });
         }
@@ -213,6 +212,7 @@ class Category extends ScreenComponent {
   loadFile = (item) => {
     if(!this.webviewComm) return;
 
+    Toast.show({text: "Fetching video links..."});
     console.log(">>>loadFile", item.get('data'));
     this.webviewComm.makeCall("loadContent", [item.get('data')])
     .then(res => {
@@ -220,10 +220,18 @@ class Category extends ScreenComponent {
 
       if(res && res.list && res.list[0] && res.list[0].file) {
         var link = res.list[0].file;
-        this.playMedia(link);
+        Toast.show({text: "Playing..."});
+        return this.playMedia(link)
+        .then(res => {
+          if(!res)
+            Toast.show({text: "Unable to play", buttonText: "OK", type: "danger"});
+        });
+      } else {
+        Toast.show({text: "Unable to fetch links", buttonText: "OK", type: "danger"});
       }
     })
     .catch(err => {
+      Toast.show({text: "Unable to load", buttonText: "OK", type: "danger"});
       console.log(">>loadFile -> error:", err);
     });
   };
@@ -314,7 +322,10 @@ class Category extends ScreenComponent {
       this.webviewComm = webviewComm;
 
       var source = this.props.source;
-      if(source.get('isEnd') || source.get('children').size) return;
+      if(source.get('isEnd') || source.get('children').size) {
+        this.setState({});
+        return;
+      }
 
       this._loadContent();
     });
@@ -336,7 +347,7 @@ class Category extends ScreenComponent {
     }
 
     var loader = null;
-    if(this.state.isLoading) {
+    if(this.state.isLoading || !this.webviewComm) {
       loader = <ActivityIndicator size="large" color="#0000ff" style={{position:"absolute", left:"50%", top:"50%", marginLeft:-50, marginTop:-50, width:100, height:100}} />;
     }
 

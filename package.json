@@ -23,6 +23,7 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "shortid": "^2.2.12",
+    "sprintf-js": "^1.1.1",
     "uglifyify": "^5.0.1",
     "utf8": "^3.0.0"
   },

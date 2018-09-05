@@ -58,19 +58,21 @@
 		605AE50721274C2D006F5317 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50621274C2D006F5317 /* QuartzCore.framework */; };
 		605AE50921274C3B006F5317 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50821274C3A006F5317 /* SystemConfiguration.framework */; };
 		605AE50B21274C44006F5317 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605AE50A21274C44006F5317 /* UIKit.framework */; };
-		6067942F21390092003417FF /* libConnectSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6067942821390083003417FF /* libConnectSDK.a */; };
 		60679433213902DA003417FF /* ConnectSDKSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 60679432213902DA003417FF /* ConnectSDKSearch.m */; };
 		60875D90210BE753006CC977 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		60B40FE52128F93500D0DBDA /* SmartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE42128F93400D0DBDA /* SmartView.framework */; };
-		60B40FE72128F98000D0DBDA /* SmartView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE42128F93400D0DBDA /* SmartView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		60B40FE82128F98300D0DBDA /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE22128F92700D0DBDA /* GoogleCast.framework */; };
-		60B40FE92128F98300D0DBDA /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B40FE22128F92700D0DBDA /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		609D4752213E02C400528C9D /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609D4751213E02C400528C9D /* libicucore.tbd */; };
+		609D4754213E02CE00528C9D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609D4753213E02CD00528C9D /* libz.tbd */; };
+		60ABBE7C213E0A090008DF68 /* libConnectSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60ABBE73213E09D80008DF68 /* libConnectSDK.a */; };
+		60B0312E213E172900E29665 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B0312D213E172900E29665 /* GoogleCast.framework */; };
+		60B0312F213E173100E29665 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B0312D213E172900E29665 /* GoogleCast.framework */; };
+		60B03130213E173100E29665 /* GoogleCast.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B0312D213E172900E29665 /* GoogleCast.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		60B03134213E178900E29665 /* SmartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B03133213E178900E29665 /* SmartView.framework */; };
+		60B03135213E179B00E29665 /* SmartView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60B03133213E178900E29665 /* SmartView.framework */; };
+		60B03136213E179B00E29665 /* SmartView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60B03133213E178900E29665 /* SmartView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		60B40FF02129081E00D0DBDA /* SamsungDeviceSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B40FEF2129081E00D0DBDA /* SamsungDeviceSearch.swift */; };
 		60B40FF2212A112F00D0DBDA /* CastDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 60B40FF1212A112F00D0DBDA /* CastDevice.m */; };
 		60CF7AE7212A3FB50007C227 /* ChromeCastDeviceSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CF7AE6212A3FB50007C227 /* ChromeCastDeviceSearch.swift */; };
 		60CF7B2821325A880007C227 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60CF7B2721325A880007C227 /* HttpRequest.swift */; };
-		60F025102138FF55003B8EB2 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609F7E852136228D008854FB /* libz.tbd */; };
-		60F025112138FF69003B8EB2 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 609F7E8321362267008854FB /* libicucore.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8994B77C3BC34D6E8059B8C7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4AA4E4EF0EE84DA6B7056CE9 /* Octicons.ttf */; };
 		9275A262CEC8465CA111580C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C40FDAA0D6C94590AAD4B226 /* SimpleLineIcons.ttf */; };
@@ -332,30 +334,30 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
-		6067942721390083003417FF /* PBXContainerItemProxy */ = {
+		60ABBE72213E09D80008DF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			containerPortal = 60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = EA61EB1018FE485B00D75696;
 			remoteInfo = ConnectSDK;
 		};
-		6067942921390083003417FF /* PBXContainerItemProxy */ = {
+		60ABBE74213E09D80008DF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			containerPortal = 60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 44375E7F1A25265600D2F6DE;
 			remoteInfo = ConnectSDKTests;
 		};
-		6067942B21390083003417FF /* PBXContainerItemProxy */ = {
+		60ABBE76213E09D80008DF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			containerPortal = 60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 44E98FAD1B1E84880043BC70;
 			remoteInfo = ConnectSDKIntegrationTests;
 		};
-		6067942D21390083003417FF /* PBXContainerItemProxy */ = {
+		60ABBE78213E09D80008DF68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+			containerPortal = 60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 44BEBF6C1B4F341A00DA1A1D;
 			remoteInfo = ConnectSDKAcceptanceTests;
@@ -390,8 +392,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				60B40FE92128F98300D0DBDA /* GoogleCast.framework in Embed Frameworks */,
-				60B40FE72128F98000D0DBDA /* SmartView.framework in Embed Frameworks */,
+				60B03130213E173100E29665 /* GoogleCast.framework in Embed Frameworks */,
+				60B03136213E179B00E29665 /* SmartView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +433,7 @@
 		5ED9437352D043F09577EAF0 /* Roboto_medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto_medium.ttf; path = "../node_modules/native-base/Fonts/Roboto_medium.ttf"; sourceTree = "<group>"; };
 		60110D98212682730064D4C3 /* CastDeviceModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastDeviceModule.h; sourceTree = "<group>"; };
 		60110DBF212686EB0064D4C3 /* CastDeviceModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastDeviceModule.m; sourceTree = "<group>"; };
+		60214F1F213B19C7001E386B /* ConnectSDKSearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConnectSDKSearch.h; sourceTree = "<group>"; };
 		605AE4F021274B98006F5317 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		605AE4F221274BA0006F5317 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		605AE4F421274BA7006F5317 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -445,13 +448,14 @@
 		605AE50621274C2D006F5317 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		605AE50821274C3A006F5317 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		605AE50A21274C44006F5317 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6067941F21390083003417FF /* ConnectSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ConnectSDK.xcodeproj; path = "../../Connect-SDK-iOS-Lite/ConnectSDK.xcodeproj"; sourceTree = "<group>"; };
 		60679432213902DA003417FF /* ConnectSDKSearch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConnectSDKSearch.m; sourceTree = "<group>"; };
-		609F7E8321362267008854FB /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
-		609F7E852136228D008854FB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		609D4751213E02C400528C9D /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		609D4753213E02CD00528C9D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		609D475B213E038300528C9D /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ConnectSDK.xcodeproj; path = "../../Connect-SDK-iOS-Lite/ConnectSDK.xcodeproj"; sourceTree = "<group>"; };
+		60B0312D213E172900E29665 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "../../../Downloads/GoogleCastSDK-ios-4.3.1_dynamic 3/GoogleCast.framework"; sourceTree = "<group>"; };
+		60B03133213E178900E29665 /* SmartView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SmartView.framework; sourceTree = "<group>"; };
 		60B40FE12128F0F300D0DBDA /* CastDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastDevice.h; sourceTree = "<group>"; };
-		60B40FE22128F92700D0DBDA /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleCast.framework; sourceTree = "<group>"; };
-		60B40FE42128F93400D0DBDA /* SmartView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SmartView.framework; sourceTree = "<group>"; };
 		60B40FEE2129077500D0DBDA /* TinyCast-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TinyCast-Bridging-Header.h"; sourceTree = "<group>"; };
 		60B40FEF2129081E00D0DBDA /* SamsungDeviceSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamsungDeviceSearch.swift; sourceTree = "<group>"; };
 		60B40FF1212A112F00D0DBDA /* CastDevice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastDevice.m; sourceTree = "<group>"; };
@@ -480,25 +484,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6067942F21390092003417FF /* libConnectSDK.a in Frameworks */,
-				60F025112138FF69003B8EB2 /* libicucore.tbd in Frameworks */,
-				60F025102138FF55003B8EB2 /* libz.tbd in Frameworks */,
+				60ABBE7C213E0A090008DF68 /* libConnectSDK.a in Frameworks */,
+				609D4754213E02CE00528C9D /* libz.tbd in Frameworks */,
+				609D4752213E02C400528C9D /* libicucore.tbd in Frameworks */,
 				605AE50B21274C44006F5317 /* UIKit.framework in Frameworks */,
-				60B40FE82128F98300D0DBDA /* GoogleCast.framework in Frameworks */,
 				605AE50921274C3B006F5317 /* SystemConfiguration.framework in Frameworks */,
 				605AE50721274C2D006F5317 /* QuartzCore.framework in Frameworks */,
 				605AE50521274C23006F5317 /* MediaToolbox.framework in Frameworks */,
 				605AE50321274C15006F5317 /* MediaPlayer.framework in Frameworks */,
 				605AE50121274C04006F5317 /* MediaAccessibility.framework in Frameworks */,
 				605AE4FD21274BC9006F5317 /* Foundation.framework in Frameworks */,
+				60B03134213E178900E29665 /* SmartView.framework in Frameworks */,
 				605AE4FB21274BC1006F5317 /* CoreText.framework in Frameworks */,
-				60B40FE52128F93500D0DBDA /* SmartView.framework in Frameworks */,
 				605AE4F921274BBA006F5317 /* CoreGraphics.framework in Frameworks */,
 				605AE4F721274BB1006F5317 /* CoreBluetooth.framework in Frameworks */,
 				605AE4F521274BA7006F5317 /* AVFoundation.framework in Frameworks */,
 				605AE4F321274BA0006F5317 /* AudioToolbox.framework in Frameworks */,
 				605AE4F121274B98006F5317 /* Accelerate.framework in Frameworks */,
+				60B03135213E179B00E29665 /* SmartView.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
+				60B0312E213E172900E29665 /* GoogleCast.framework in Frameworks */,
 				60875D90210BE753006CC977 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -506,6 +511,7 @@
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				60B0312F213E173100E29665 /* GoogleCast.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -659,8 +665,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				609F7E852136228D008854FB /* libz.tbd */,
-				609F7E8321362267008854FB /* libicucore.tbd */,
+				609D475B213E038300528C9D /* libc++.tbd */,
+				609D4753213E02CD00528C9D /* libz.tbd */,
+				609D4751213E02C400528C9D /* libicucore.tbd */,
 				605AE50A21274C44006F5317 /* UIKit.framework */,
 				605AE50821274C3A006F5317 /* SystemConfiguration.framework */,
 				605AE50621274C2D006F5317 /* QuartzCore.framework */,
@@ -709,19 +716,9 @@
 				60B40FEF2129081E00D0DBDA /* SamsungDeviceSearch.swift */,
 				60CF7AE6212A3FB50007C227 /* ChromeCastDeviceSearch.swift */,
 				60679432213902DA003417FF /* ConnectSDKSearch.m */,
+				60214F1F213B19C7001E386B /* ConnectSDKSearch.h */,
 			);
 			path = provider;
-			sourceTree = "<group>";
-		};
-		6067942021390083003417FF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6067942821390083003417FF /* libConnectSDK.a */,
-				6067942A21390083003417FF /* ConnectSDKTests.xctest */,
-				6067942C21390083003417FF /* ConnectSDKIntegrationTests.xctest */,
-				6067942E21390083003417FF /* ConnectSDKAcceptanceTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		60875DC2210BEA09006CC977 /* Recovered References */ = {
@@ -729,6 +726,17 @@
 			children = (
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		60ABBE6B213E09D80008DF68 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60ABBE73213E09D80008DF68 /* libConnectSDK.a */,
+				60ABBE75213E09D80008DF68 /* ConnectSDKTests.xctest */,
+				60ABBE77213E09D80008DF68 /* ConnectSDKIntegrationTests.xctest */,
+				60ABBE79213E09D80008DF68 /* ConnectSDKAcceptanceTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -743,7 +751,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				6067941F21390083003417FF /* ConnectSDK.xcodeproj */,
+				60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -772,8 +780,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				60B40FE42128F93400D0DBDA /* SmartView.framework */,
-				60B40FE22128F92700D0DBDA /* GoogleCast.framework */,
+				60B03133213E178900E29665 /* SmartView.framework */,
+				60B0312D213E172900E29665 /* GoogleCast.framework */,
 				13B07FAE1A68108700A75B9A /* TinyCast */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* TinyCastTests */,
@@ -944,8 +952,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 6067942021390083003417FF /* Products */;
-					ProjectRef = 6067941F21390083003417FF /* ConnectSDK.xcodeproj */;
+					ProductGroup = 60ABBE6B213E09D80008DF68 /* Products */;
+					ProjectRef = 60ABBE6A213E09D80008DF68 /* ConnectSDK.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1245,32 +1253,32 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6067942821390083003417FF /* libConnectSDK.a */ = {
+		60ABBE73213E09D80008DF68 /* libConnectSDK.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libConnectSDK.a;
-			remoteRef = 6067942721390083003417FF /* PBXContainerItemProxy */;
+			remoteRef = 60ABBE72213E09D80008DF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6067942A21390083003417FF /* ConnectSDKTests.xctest */ = {
+		60ABBE75213E09D80008DF68 /* ConnectSDKTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ConnectSDKTests.xctest;
-			remoteRef = 6067942921390083003417FF /* PBXContainerItemProxy */;
+			remoteRef = 60ABBE74213E09D80008DF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6067942C21390083003417FF /* ConnectSDKIntegrationTests.xctest */ = {
+		60ABBE77213E09D80008DF68 /* ConnectSDKIntegrationTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ConnectSDKIntegrationTests.xctest;
-			remoteRef = 6067942B21390083003417FF /* PBXContainerItemProxy */;
+			remoteRef = 60ABBE76213E09D80008DF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6067942E21390083003417FF /* ConnectSDKAcceptanceTests.xctest */ = {
+		60ABBE79213E09D80008DF68 /* ConnectSDKAcceptanceTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ConnectSDKAcceptanceTests.xctest;
-			remoteRef = 6067942D21390083003417FF /* PBXContainerItemProxy */;
+			remoteRef = 60ABBE78213E09D80008DF68 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -1505,7 +1513,6 @@
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1536,7 +1543,6 @@
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;

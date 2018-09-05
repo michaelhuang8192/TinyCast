@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { StackNavigator, createDrawerNavigator } from 'react-navigation';
 import getTheme from './native-base-theme/components';
-import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem } from 'native-base';
+import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem, Root } from 'native-base';
 
 import Home from "./src/Home/Home";
 import appState from "./src/appState";
@@ -25,7 +25,7 @@ export default class App extends Component {
         return (
             <Provider store={store}>
                 <StyleProvider style={getTheme()}>
-                    <RootNavigator />
+                    <Root><RootNavigator /></Root>
                 </StyleProvider>
             </Provider>
         );

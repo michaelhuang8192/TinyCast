@@ -75,7 +75,7 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
   }
   
   func getName() -> String! {
-    return service.name
+    return service.name + " (SamsungSDK)"
   }
   
   func disconnect() {
@@ -156,3 +156,4 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
   }
   
 }
+

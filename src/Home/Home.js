@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, View, SectionList, NativeModules } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem } from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem, Toast } from 'native-base';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import { connect } from 'react-redux';
 import shortid from "shortid";
@@ -141,16 +141,14 @@ class Home extends ScreenComponent {
   	return (
         <Container>
             {this._renderNavHeader()}
-            <Content>
-                <View style={styles.container}>
-                  <SectionList
-                  renderItem={this._renderItem}
-                  renderSectionHeader={this._renderSectionHeader}
-                  sections={lst}
-                  keyExtractor={this._keyExtractor}
-                  />
-                </View>
-            </Content>
+            <View style={styles.container}>
+              <SectionList
+              renderItem={this._renderItem}
+              renderSectionHeader={this._renderSectionHeader}
+              sections={lst}
+              keyExtractor={this._keyExtractor}
+              />
+            </View>
         </Container>
         
     );

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "CastDeviceModule.h"
 #import "TinyCast-Swift.h"
+#import "ConnectSDKSearch.h"
 
 @implementation CastDeviceModule
 
@@ -51,7 +52,8 @@ RCT_EXPORT_MODULE(RNSmartTvController);
 - (NSArray<id<CastDeviceSearch>> *)getSmartDeviceSearchList {
   return @[
            [[SamsungDeviceSearch alloc] init],
-           [[ChromeCastDeviceSearch alloc] init]
+           [[ChromeCastDeviceSearch alloc] init],
+           [[ConnectSDKSearch alloc] init]
   ];
 }
 
@@ -175,6 +177,62 @@ RCT_REMAP_METHOD(openUrl, openUrl:(NSString *)url body:(NSString *)body options:
   
   if(![httpRequest openUrl:url body:body options:options cb:cb]) {
     reject(@"Invalid Http Request", @"Invalid Http Request", NULL);
+  }
+}
+
+RCT_REMAP_METHOD(play, play:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+  if(curCastDevice == NULL) {
+    reject(@"No Device", @"No Device", NULL);
+  } else {
+    [curCastDevice play:^(FunctionCallResult<NSNumber *> * callResult) {
+      if([callResult error]) {
+        reject(@"Error", @"Error", [callResult error]);
+      } else {
+        resolve([callResult result]);
+      }
+    }];
+  }
+}
+
+RCT_REMAP_METHOD(pause, pause:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+  if(curCastDevice == NULL) {
+    reject(@"No Device", @"No Device", NULL);
+  } else {
+    [curCastDevice play:^(FunctionCallResult<NSNumber *> * callResult) {
+      if([callResult error]) {
+        reject(@"Error", @"Error", [callResult error]);
+      } else {
+        resolve([callResult result]);
+      }
+    }];
+  }
+}
+
+RCT_REMAP_METHOD(seek, seek:(NSNumber * _Nonnull)position resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+  if(curCastDevice == NULL) {
+    reject(@"No Device", @"No Device", NULL);
+  } else {
+    [curCastDevice seek:position cb:^(FunctionCallResult<NSNumber *> * callResult) {
+      if([callResult error]) {
+        reject(@"Error", @"Error", [callResult error]);
+      } else {
+        resolve([callResult result]);
+      }
+    }];
+  }
+}
+
+RCT_REMAP_METHOD(getPlayerStatus, getPlayerStatus:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+  if(curCastDevice == NULL) {
+    reject(@"No Device", @"No Device", NULL);
+  } else {
+    [curCastDevice getStatus:^(FunctionCallResult<NSDictionary *> * callResult) {
+      if([callResult error]) {
+        reject(@"Error", @"Error", [callResult error]);
+      } else {
+        resolve([callResult result]);
+      }
+    }];
   }
 }
 
