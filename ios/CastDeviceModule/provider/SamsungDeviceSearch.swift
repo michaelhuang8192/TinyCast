@@ -6,6 +6,7 @@
 //  Copyright © 2018 Facebook. All rights reserved.
 //
 
+
 import Foundation
 
 class SamsungDeviceSearch : NSObject, CastDeviceSearch, ServiceSearchDelegate {
@@ -64,6 +65,7 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
   var queue: DispatchQueue? = nil;
   var player: VideoPlayer? = nil;
   var isConnected: Bool = false;
+  var playerStatus : [String : Any] = [:];
   
   init(_ service: Service) {
     self.service = service;
@@ -84,7 +86,9 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
         if(self.player != nil) {
           self.player!.disconnect(true, completionHandler: nil);
           self.player!.connectionDelegate = nil;
+          self.player?.playerDelegate = nil;
           self.player = nil;
+          self.playerStatus.removeAll();
         }
       }
       queue = nil;
@@ -97,10 +101,10 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
     }
     
     queue?.async {
-      self.player?.connectionDelegate = nil;
       self.player = self.service.createVideoPlayer("DMP");
       self.isConnected = true;
       self.player?.connectionDelegate = self;
+      self.player?.playerDelegate = self;
     }
   }
   
@@ -114,7 +118,7 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
       if(self.player != nil) {
         self.player!.playContent(URL(string: url)!) {
           (error) -> Void in
-          cb(FunctionCallResult<NSNumber>(result: NSNumber(value:error != nil), error: error));
+          cb(FunctionCallResult<NSNumber>(result: NSNumber(value:error == nil), error: error));
         };
       } else {
         cb(FunctionCallResult<NSNumber>(result: nil, error: NSError(domain: "com.tinappsdev.TinyCast", code: 9999)));
@@ -155,5 +159,75 @@ class SamsungDevice : NSObject, CastDevice, ConnectionDelegate {
     }
   }
   
+  func play(_ cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    queue?.async {
+      self.player?.play();
+      cb(FunctionCallResult(result: true, error: nil));
+    }
+  }
+  
+  func pause(_ cb: ((FunctionCallResult<NSNumber>?) -> Void)!) {
+    queue?.async {
+      self.player?.pause();
+      //self.playerStatus["state"] = "paused";
+      cb(FunctionCallResult(result: true, error: nil));
+    }
+  }
+  
+  func seek(_ position: NSNumber!, cb: ((FunctionCallResult<NSNumber>?) -> Void)!)
+  {
+    queue?.async {
+      self.player?.seek(position.doubleValue);
+      cb(FunctionCallResult(result: true, error: nil));
+    }
+  }
+  
+  func getStatus(_ cb: ((FunctionCallResult<NSDictionary>?) -> Void)!) {
+    queue?.async {
+      let status = self.playerStatus;
+      cb(FunctionCallResult(result: status, error: nil));
+    }
+  }
+  
 }
+
+extension SamsungDevice : VideoPlayerDelegate {
+  func onPlay() {
+    queue?.async {
+      if(self.playerStatus["state"] as? String != "playing") {
+        self.playerStatus["state"] = "playing";
+      } else {
+        self.playerStatus["state"] = "paused";
+      }
+    }
+  }
+  
+  func onPause() {
+    queue?.async {
+      self.playerStatus["state"] = "paused";
+    }
+  }
+  
+  func onStop() {
+    queue?.async {
+      self.playerStatus["state"] = "stop";
+    }
+  }
+  
+  func onCurrentPlayTime(_ progress: Int) {
+    queue?.async {
+      self.playerStatus["position"] = NSNumber(value: progress / 1000);
+    }
+  }
+  
+  func onStreamingStarted(_ duration: Int) {
+    queue?.async {
+      self.playerStatus["state"] = "playing";
+      self.playerStatus["duration"] = NSNumber(value: duration / 1000);
+    }
+  }
+  
+}
+
+
 

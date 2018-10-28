@@ -43,10 +43,12 @@ class CastDeviceControl extends React.Component {
 
 	_updateStatus = () => {
 		var _statusUpdater = this._statusUpdater;
-		RNSmartTvController.getPlayerStatus()
+		return RNSmartTvController.getPlayerStatus()
 		.then(status => {
 			if(_statusUpdater !== this._statusUpdater || this.unmounted || !status) return;
+			if(this._startDragging) return;
 
+			console.log(">>>", status);
 			this.setState({
 				isPlaying: status.state === 'playing',
 				position: status.position || 0,
@@ -57,8 +59,17 @@ class CastDeviceControl extends React.Component {
 
 	startStatusUpdater = () => {
 		this.stopStatusUpdater();
+		var isPending = false;
 		this._statusUpdater = setInterval(() => {
-			this._updateStatus();
+			if(isPending || this._startDragging) return;
+
+			isPending = true;
+			this._updateStatus()
+			.catch(() => {})
+			.then(() => {
+				isPending = false;
+			});
+
 		}, 1000);
 		this._updateStatus();
 	};
@@ -76,8 +87,11 @@ class CastDeviceControl extends React.Component {
 	}
 
 	_onSlidingComplete = (position) => {
-		console.log(">>>seek", position);
+		this._startDragging = false;
 		this.setState({draggedPosition: null});
+
+		if(!this.state.duration) return;
+
 		RNSmartTvController.seek(position || 0)
 		.then(() => {
 
@@ -110,10 +124,16 @@ class CastDeviceControl extends React.Component {
 	};
 
 	_updatePosition = (position) => {
-		this.setState({draggedPosition: position});
+		this._startDragging = true;
+		this.__updatePosition(position);
 	};
 
+	__updatePosition = _.throttle((position) => {
+		if(!this.unmounted && this._startDragging) this.setState({draggedPosition: position});
+	}, 200, {leading: true});
+
 	formatTime = (sec) => {
+		sec = sec || 0;
 		var rmd = sec / 60;
 		var sec = sec % 60;
 		var min = rmd % 60;
@@ -123,6 +143,7 @@ class CastDeviceControl extends React.Component {
 	};
 
 	render() {
+		console.log(this.state);
 		return (
 		<View style={{flex:0, height:200, borderTopColor: '#cccccc', borderTopWidth:1, padding:10}}>
 		<Title numberOfLines={1}>{this.props.device.name}</Title>
@@ -135,7 +156,7 @@ class CastDeviceControl extends React.Component {
 	          	onValueChange={this._updatePosition}
 	          	onSlidingComplete={this._onSlidingComplete}
 	        />
-	        <Text numberOfLines={1} style={{flex:0, width:80, textAlign:'right'}}>{this.formatTime(this.state.draggedPosition != null ? this.state.draggedPosition : this.state.position)}</Text>
+	        <Text numberOfLines={1} style={{flex:0, width:80, textAlign:'right'}}>{this.formatTime(this._startDragging ? this.state.draggedPosition : this.state.position)}</Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
         	<Button light><Icon name='step-backward' type='FontAwesome' /></Button>
@@ -193,10 +214,12 @@ class ChooseSmartDeviceModal extends ScreenComponent {
 			});
 		})
 		.then(device => {
-			this.props.dispatch({
-				type: "settings_setCastDevice",
-        		payload: device
-			});
+			setTimeout(() => {
+				this.props.dispatch({
+					type: "settings_setCastDevice",
+	        		payload: device
+				})
+			}, 0);
 			this.selectedDevice = device;
 		})
 		.then(() => {

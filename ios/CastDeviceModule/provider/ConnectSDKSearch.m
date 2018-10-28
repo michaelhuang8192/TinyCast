@@ -73,6 +73,9 @@
   self = [super init];
   if(self != NULL) {
     self->device = device;
+    self->playerStatus = [[NSMutableDictionary alloc] init];
+    self->updateTimer = NULL;
+    self->requestCount = 0;
   }
   
   return self;
@@ -81,12 +84,50 @@
 - (void)connect {
   dispatch_async(dispatch_get_main_queue(), ^{
     [self->device connect];
+    
+    self->updateTimer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+      
+      if(self->requestCount > 0) {
+        return;
+      }
+      
+      self->requestCount++;
+      [[self->device mediaControl] getPositionWithSuccess:^(NSTimeInterval position) {
+        self->requestCount--;
+        [self updateStatusWithPosition:position];
+      } failure:^(NSError *error) {
+        self->requestCount--;
+      }];
+      
+      self->requestCount++;
+      [[self->device mediaControl] getPlayStateWithSuccess:^(MediaControlPlayState playState) {
+        self->requestCount--;
+        [self updateStatusWithPlaystate:playState];
+      } failure:^(NSError *error) {
+        self->requestCount--;
+      }];
+      
+      self->requestCount++;
+      [[self->device mediaControl] getDurationWithSuccess:^(NSTimeInterval duration) {
+        self->requestCount--;
+        [self updateStatusWithDuration:duration];
+      } failure:^(NSError *error) {
+        self->requestCount--;
+      }];
+      
+    }];
   });
 }
 
 - (void)disconnect {
   dispatch_async(dispatch_get_main_queue(), ^{
     [self->device disconnect];
+    if(self->updateTimer != NULL) {
+      [self->updateTimer invalidate];
+      self->updateTimer = NULL;
+    }
+    [self->playerStatus removeAllObjects];
+    self->requestCount = 0;
   });
 }
 
@@ -124,10 +165,82 @@
     MediaInfo *mediaInfo = [[MediaInfo alloc] initWithURL:mediaURL mimeType:@"video/mp4"];
 
     [[self->device mediaPlayer] playMediaWithMediaInfo:mediaInfo shouldLoop:NO success:^(MediaLaunchObject *mediaLaunchObject) {
+      
       cb([[FunctionCallResult alloc] initWithResult:@YES error:NULL]);
     } failure:^(NSError *error) {
       cb([[FunctionCallResult alloc] initWithResult:@NO error:error]);
     }];
+  });
+}
+
+- (void)play:(void (^)(FunctionCallResult<NSNumber *> *))cb {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[self->device mediaControl] playWithSuccess:^(id responseObject) {
+      cb([[FunctionCallResult alloc] initWithResult:@YES error:NULL]);
+    } failure:^(NSError *error) {
+      cb([[FunctionCallResult alloc] initWithResult:@NO error:error]);
+    }];
+  });
+}
+
+- (void)pause:(void (^)(FunctionCallResult<NSNumber *> *))cb {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[self->device mediaControl] pauseWithSuccess:^(id responseObject) {
+      cb([[FunctionCallResult alloc] initWithResult:@YES error:NULL]);
+    } failure:^(NSError *error) {
+      cb([[FunctionCallResult alloc] initWithResult:@NO error:error]);
+    }];
+  });
+}
+
+- (void)seek:(NSNumber *)position cb:(void (^)(FunctionCallResult<NSNumber *> *))cb
+{
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[self->device mediaControl] seek:[position integerValue] success:^(id responseObject) {
+      cb([[FunctionCallResult alloc] initWithResult:@YES error:NULL]);
+    } failure:^(NSError *error) {
+      cb([[FunctionCallResult alloc] initWithResult:@NO error:error]);
+    }];
+  });
+}
+
+- (void)getStatus:(void (^)(FunctionCallResult<NSDictionary *> *))cb {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSDictionary * status = [self->playerStatus copy];
+    cb([[FunctionCallResult alloc] initWithResult:status error:NULL]);
+  });
+}
+
+- (void)updateStatusWithPosition:(NSTimeInterval)position {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if(self->updateTimer == NULL) {
+      return;
+    }
+    [self->playerStatus setValue:[[NSNumber alloc] initWithDouble:position] forKey:@"position"];
+  });
+}
+
+- (void)updateStatusWithDuration:(NSTimeInterval)duration {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if(self->updateTimer == NULL) {
+      return;
+    }
+    [self->playerStatus setValue:[[NSNumber alloc] initWithDouble:duration] forKey:@"duration"];
+  });
+}
+
+- (void)updateStatusWithPlaystate:(MediaControlPlayState)playstate {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if(self->updateTimer == NULL) {
+      return;
+    }
+    if(playstate == MediaControlPlayStatePlaying) {
+      [self->playerStatus setValue:@"playing" forKey:@"state"];
+    } else if(playstate == MediaControlPlayStatePaused) {
+      [self->playerStatus setValue:@"paused" forKey:@"state"];
+    } else {
+      [self->playerStatus setValue:@"stop" forKey:@"state"];
+    }
   });
 }
 

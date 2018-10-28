@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import shortid from "shortid";
 import _ from 'lodash';
 
-import Util from '../libs/Util';
-import WebComm from '../libs/WebComm';
-import ScreenComponent from '../libs/ScreenComponent';
-import Helper from '../shared/Helper.js';
+import Util from './libs/Util';
+import WebComm from './libs/WebComm';
+import ScreenComponent from './libs/ScreenComponent';
+import Helper from './shared/Helper.js';
 
 const RNSmartTvController = NativeModules.RNSmartTvController;
 
@@ -247,6 +247,15 @@ class Category extends ScreenComponent {
             return device ? RNSmartTvController.isConnected() : false;
         })
         .then(isConnected => {
+            if(!isConnected) {
+              setTimeout(() => {
+                this.props.dispatch({
+                  type: "settings_setCastDevice",
+                  payload: undefined
+                });
+              }, 0);
+            }
+
             return isConnected ? true : 
               this.startDiscovery().then(device => { return !!device; });
         })

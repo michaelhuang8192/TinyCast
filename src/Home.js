@@ -6,13 +6,12 @@ import { connect } from 'react-redux';
 import shortid from "shortid";
 import _ from 'lodash';
 
-import Category from "../Category/Category"
-import Util from '../libs/Util';
-import ScreenComponent from '../libs/ScreenComponent';
-import ChooseSmartDeviceModal from '../shared/ChooseSmartDeviceModal';
-import Helper from '../shared/Helper.js';
-import immu from '../libs/immutable.min';
-
+import Category from "./Category"
+import Util from './libs/Util';
+import ScreenComponent from './libs/ScreenComponent';
+import ChooseSmartDeviceModal from './shared/ChooseSmartDeviceModal';
+import Helper from './shared/Helper.js';
+import immu from './libs/immutable.min';
 
 
 class MyListItem extends React.PureComponent {
@@ -44,7 +43,7 @@ class Home extends ScreenComponent {
     });
 
     //this.props.navigation.setParams({
-    //    renderHeader: this._renderNavHeader
+    //    renderDrawer: this._renderDrawer
     //});
   }
 
@@ -81,13 +80,17 @@ class Home extends ScreenComponent {
     });
   };
 
+  toggleDrawer =() => {
+    this.props.navigation.toggleDrawer();
+  };
+
   _renderNavHeader = () => {
     return (
       <Header>
         <Left>
-          <Button transparent><Icon name="menu" /></Button>
+          <Button transparent onPress={this.toggleDrawer}><Icon name="menu" /></Button>
         </Left>
-        <Body><Title>Tiny Cast</Title></Body>
+        <Body><Title>TinyCast</Title></Body>
         <Right>
           <Button transparent onPress={this.startDiscovery}><Icon name={this.props.settings.get('castDevice') ? "cast-connected" : "cast"} type="MaterialIcons" /></Button>
         </Right>
@@ -123,11 +126,15 @@ class Home extends ScreenComponent {
   }
 
   render() {
+
+    var isDemoEnabled = this.props.settings.get('isDemoEnabled');
     var videoSource = this.props.videoSource;
     var lst = [];
 
     for(var i = 0; i < this.sources.length; i++) {
       var name = this.sources[i];
+      if(name == 'Demo Source' && !isDemoEnabled) continue;
+
       var arr = this.getChildrenArray(name, videoSource.get(name));
 
       if(arr && arr.length)

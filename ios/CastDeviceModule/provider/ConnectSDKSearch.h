@@ -21,6 +21,9 @@
 
 @interface ConnectSDKDevice : NSObject<CastDevice> {
   ConnectableDevice *device;
+  NSMutableDictionary<NSString *, id> *playerStatus;
+  NSTimer *updateTimer;
+  NSInteger requestCount;
 }
 - initWithDevice:(ConnectableDevice *)device;
 

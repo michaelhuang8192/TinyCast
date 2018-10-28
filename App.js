@@ -6,17 +6,25 @@ import { StackNavigator, createDrawerNavigator } from 'react-navigation';
 import getTheme from './native-base-theme/components';
 import { StyleProvider, Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem, Root } from 'native-base';
 
-import Home from "./src/Home/Home";
+import Home from "./src/Home";
+import AppDrawer from "./src/AppDrawer";
 import appState from "./src/appState";
 
 import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated']);
 
-const RootNavigator = createDrawerNavigator({
-    Home: {
+const RootNavigator = createDrawerNavigator(
+{
+    App: {
         screen: Home
     },
-});
+},
+{
+    contentComponent: (props) => {
+        return <AppDrawer />;
+    }
+}
+);
 
 const store = createStore(appState);
 

@@ -927,6 +927,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 9D59LBT778;
 						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1515,6 +1516,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = NO;
@@ -1533,6 +1536,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinyappsdev.TinyCast;
 				PRODUCT_NAME = TinyCast;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CastDeviceModule/TinyCast-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1545,6 +1549,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = NO;
 				DEVELOPMENT_TEAM = 9D59LBT778;
@@ -1562,6 +1568,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tinyappsdev.TinyCast;
 				PRODUCT_NAME = TinyCast;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CastDeviceModule/TinyCast-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
