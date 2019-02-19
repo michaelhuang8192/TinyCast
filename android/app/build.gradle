@@ -95,7 +95,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion '27.0.3'
 
     defaultConfig {
@@ -153,10 +153,13 @@ dependencies {
     implementation "com.android.support:appcompat-v7:23.0.1"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
-    implementation files('libs/android-smartview-sdk-2.5.1.jar')
+
     implementation 'com.android.support:mediarouter-v7:23.0.0'
     implementation 'com.google.android.gms:play-services-cast-framework:9.8.0'
     implementation 'com.android.volley:volley:1.1.1'
+    //api 'com.connectsdk:connect-sdk-android-lite:1.6.0'
+    implementation project(':Connect-SDK-Android-Lite')
+    //implementation files('libs/android-smartview-sdk-2.5.1.jar')
 }
 
 // Run this once to be able to run the application with BUCK

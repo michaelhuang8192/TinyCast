@@ -9,6 +9,7 @@ import android.support.v7.media.MediaRouteSelector;
 import android.util.Log;
 
 import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaStatus;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.media.RemoteMediaClient;
@@ -18,6 +19,10 @@ import com.tinycast.helper.FunctionCallResult;
 import com.tinycast.tvcontroller.SmartDevice;
 import com.tinycast.tvcontroller.SmartDeviceSearch;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.support.v7.media.MediaRouter.RouteInfo.DEVICE_TYPE_TV;
 import static android.support.v7.media.MediaRouter.UNSELECT_REASON_DISCONNECTED;
 
 
@@ -27,17 +32,17 @@ public class ChromeCastSearch implements SmartDeviceSearch {
     private final Context context;
     private MediaRouter mediaRouter;
     private MediaRouter.Callback mediaRouterCallback;
-    private final Handler handlder;
+    private final Handler handler;
     private CastContext castContext;
 
     public ChromeCastSearch(Context context) {
         this.context = context;
-        handlder = new Handler(context.getMainLooper());
+        handler = new Handler(context.getMainLooper());
     }
 
     @Override
     public void start(int timeout, final FunctionCall<Void, SmartDevice> cb) {
-        handlder.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 if(mediaRouter != null) return;
@@ -52,12 +57,18 @@ public class ChromeCastSearch implements SmartDeviceSearch {
                 mediaRouterCallback = new MediaRouter.Callback() {
                     @Override
                     public void onRouteAdded(MediaRouter router, MediaRouter.RouteInfo route) {
+                        if(route.getDeviceType() != DEVICE_TYPE_TV) return;
+
+                        Log.i("PKT", ">>>>" + route.getId());
                         super.onRouteAdded(router, route);
                         cb.call(new ChromeCastDevice(router, route));
                     }
 
                     @Override
                     public void onRouteChanged(MediaRouter router, MediaRouter.RouteInfo route) {
+                        if(route.getDeviceType() != DEVICE_TYPE_TV) return;
+
+                        Log.i("PKT", ">>>>++" + route.getId()+route.getExtras().);
                         super.onRouteChanged(router, route);
                         cb.call(new ChromeCastDevice(router, route));
                     }
@@ -78,7 +89,7 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
     @Override
     public void stop() {
-        handlder.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
                 if(mediaRouter == null) return;
@@ -111,7 +122,7 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
         @Override
         public String getName() {
-            return mRoute.getName();
+            return String.format("%s [G]", mRoute.getName());
         }
 
         private RemoteMediaClient getRemoteMediaClient() {
@@ -130,13 +141,12 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
         @Override
         public void playMedia(final String url, final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
-            final MediaInfo mediaInfo = buildMp4Media(url);
-
-            handlder.post(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         RemoteMediaClient mRemoteMediaClient = getRemoteMediaClient();
+                        MediaInfo mediaInfo = buildMp4Media(url);
 
                         if (mRemoteMediaClient != null) {
                             mRemoteMediaClient.load(mediaInfo).setResultCallback(new ResultCallback<RemoteMediaClient.MediaChannelResult>() {
@@ -157,10 +167,9 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
         @Override
         public void connect() {
-            handlder.post(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Log.i(TAG, "Connect" + mRoute.isSelected() + mRoute.toString());
                     mRouter.selectRoute(mRoute);
                 }
             });
@@ -168,7 +177,7 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
         @Override
         public void isConnected(final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
-            handlder.post(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     try {
@@ -188,7 +197,7 @@ public class ChromeCastSearch implements SmartDeviceSearch {
 
         @Override
         public void disconnect() {
-            handlder.post(new Runnable() {
+            handler.post(new Runnable() {
                 @Override
                 public void run() {
                     mRouter.unselect(UNSELECT_REASON_DISCONNECTED);
@@ -200,6 +209,113 @@ public class ChromeCastSearch implements SmartDeviceSearch {
         public boolean isSameDevice(SmartDevice smartDevice) {
             return false;
         }
+
+        @Override
+        public void play(final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        RemoteMediaClient mRemoteMediaClient = getRemoteMediaClient();
+
+                        mRemoteMediaClient.play().setResultCallback(new ResultCallback<RemoteMediaClient.MediaChannelResult>() {
+                            @Override
+                            public void onResult(@NonNull RemoteMediaClient.MediaChannelResult mediaChannelResult) {
+                                cb.callOnce(FunctionCallResult.asResult(true));
+                            }
+                        });
+
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void pause(final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        RemoteMediaClient mRemoteMediaClient = getRemoteMediaClient();
+
+                        mRemoteMediaClient.pause().setResultCallback(new ResultCallback<RemoteMediaClient.MediaChannelResult>() {
+                            @Override
+                            public void onResult(@NonNull RemoteMediaClient.MediaChannelResult mediaChannelResult) {
+                                cb.callOnce(FunctionCallResult.asResult(true));
+                            }
+                        });
+
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void seek(final Integer position, final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        RemoteMediaClient mRemoteMediaClient = getRemoteMediaClient();
+
+                        mRemoteMediaClient.seek(position * 1000).setResultCallback(new ResultCallback<RemoteMediaClient.MediaChannelResult>() {
+                            @Override
+                            public void onResult(@NonNull RemoteMediaClient.MediaChannelResult mediaChannelResult) {
+                                cb.callOnce(FunctionCallResult.asResult(true));
+                            }
+                        });
+
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void getStatus(final FunctionCall<Void, FunctionCallResult<Map<String, Object>>> cb) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        final RemoteMediaClient mRemoteMediaClient = getRemoteMediaClient();
+
+                        mRemoteMediaClient.requestStatus().setResultCallback(new ResultCallback<RemoteMediaClient.MediaChannelResult>() {
+                            @Override
+                            public void onResult(@NonNull RemoteMediaClient.MediaChannelResult mediaChannelResult) {
+                                Map<String, Object> statusMap = new HashMap<>();
+
+                                MediaStatus status = mRemoteMediaClient.getMediaStatus();
+                                if(status != null) {
+                                    if(status.getPlayerState() == MediaStatus.PLAYER_STATE_PLAYING)
+                                        statusMap.put("state", "playing");
+                                    else if(status.getPlayerState() == MediaStatus.PLAYER_STATE_PAUSED)
+                                        statusMap.put("state", "paused");
+                                    else if(status.getPlayerState() == MediaStatus.PLAYER_STATE_IDLE)
+                                        statusMap.put("state", "stop");
+
+                                    statusMap.put("position", status.getStreamPosition() / 1000);
+
+                                    MediaInfo mi = status.getMediaInfo();
+                                    if(mi != null)
+                                        statusMap.put("duration", mi.getStreamDuration() / 1000);
+                                }
+
+                                cb.callOnce(FunctionCallResult.asResult(statusMap));
+                            }
+                        });
+
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Map<String, Object>>asError(e));
+                    }
+                }
+            });
+        }
+
 
     }
 

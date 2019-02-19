@@ -48,7 +48,6 @@ class Home extends ScreenComponent {
   }
 
   _addSource = () => {
-    console.log(">>>dispatch...");
     this.props.dispatch({
       type: "videoSource_update",
       payload: {
@@ -80,7 +79,7 @@ class Home extends ScreenComponent {
     });
   };
 
-  toggleDrawer =() => {
+  toggleDrawer = () => {
     this.props.navigation.toggleDrawer();
   };
 

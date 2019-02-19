@@ -23,7 +23,7 @@ class AppDrawer extends React.PureComponent {
 		    <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
 		    <Header>
 			    <Body>
-	            	<Title>TinyCast v1.0</Title>
+	            	<Title>TinyCast</Title>
 	            </Body>
 	        </Header>
 		    <Content>
@@ -35,19 +35,6 @@ class AppDrawer extends React.PureComponent {
 	            </Left>
 	            <Body>
 	              <Text>Enable Demo</Text>
-	            </Body>
-	            <Right>
-	              <Switch onValueChange={this.update_isDemoEnabled} value={this.props.settings.get('isDemoEnabled')} />
-	            </Right>
-          	</ListItem>
-          	<ListItem icon>
-	            <Left>
-	              <Button style={{ backgroundColor: "#007AFF" }}>
-	                <Icon active name="link" />
-	              </Button>
-	            </Left>
-	            <Body>
-	              <Text>Add New Source</Text>
 	            </Body>
 	            <Right>
 	              <Switch onValueChange={this.update_isDemoEnabled} value={this.props.settings.get('isDemoEnabled')} />

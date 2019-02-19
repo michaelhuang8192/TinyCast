@@ -1,2 +1,2 @@
 rootProject.name = 'TinyCast'
-include ':app'
+include ':app', ':Connect-SDK-Android-Lite'

@@ -86,7 +86,6 @@ public class RNSmartTvControllerModule extends ReactContextBaseJavaModule {
         Integer objectId = null;
         smartDevices.put(device.getId(), device);
 
-        Log.i(TAG, ">>>ADDED: " + device.getId());
         reactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(
@@ -103,7 +102,6 @@ public class RNSmartTvControllerModule extends ReactContextBaseJavaModule {
                 curSmartDevice.disconnect();
                 curSmartDevice = null;
             }
-            Log.i(TAG, ">>>selectDevice" + id);
             if (id != null) {
                 device = curSmartDevice = smartDevices.get(id);
             }
@@ -224,6 +222,82 @@ public class RNSmartTvControllerModule extends ReactContextBaseJavaModule {
             });
         } else {
             promise.reject("No HttpRequest Object", new Exception("No HttpRequest Object"));
+        }
+    }
+
+    @ReactMethod
+    public void play(final Promise promise) {
+        SmartDevice device = curSmartDevice;
+        if (device != null) {
+            device.play(new FunctionCall<Void, FunctionCallResult<Boolean>>() {
+                @Override
+                public Void call(FunctionCallResult<Boolean> arg) {
+                    if(arg.isError())
+                        promise.reject(arg.getError());
+                    else
+                        promise.resolve(arg.getResult());
+                    return null;
+                }
+            });
+        } else {
+            promise.reject("No Device", new Exception("No Device"));
+        }
+    }
+
+    @ReactMethod
+    public void pause(final Promise promise) {
+        SmartDevice device = curSmartDevice;
+        if (device != null) {
+            device.pause(new FunctionCall<Void, FunctionCallResult<Boolean>>() {
+                @Override
+                public Void call(FunctionCallResult<Boolean> arg) {
+                    if(arg.isError())
+                        promise.reject(arg.getError());
+                    else
+                        promise.resolve(arg.getResult());
+                    return null;
+                }
+            });
+        } else {
+            promise.reject("No Device", new Exception("No Device"));
+        }
+    }
+
+    @ReactMethod
+    public void seek(Integer position, final Promise promise) {
+        SmartDevice device = curSmartDevice;
+        if (device != null) {
+            device.seek(position, new FunctionCall<Void, FunctionCallResult<Boolean>>() {
+                @Override
+                public Void call(FunctionCallResult<Boolean> arg) {
+                    if(arg.isError())
+                        promise.reject(arg.getError());
+                    else
+                        promise.resolve(arg.getResult());
+                    return null;
+                }
+            });
+        } else {
+            promise.reject("No Device", new Exception("No Device"));
+        }
+    }
+
+    @ReactMethod
+    public void getPlayerStatus(final Promise promise) {
+        SmartDevice device = curSmartDevice;
+        if (device != null) {
+            device.getStatus(new FunctionCall<Void, FunctionCallResult<Map<String, Object>>>() {
+                @Override
+                public Void call(FunctionCallResult<Map<String, Object>> arg) {
+                    if(arg.isError())
+                        promise.reject(arg.getError());
+                    else
+                        promise.resolve(Arguments.makeNativeMap(arg.getResult()));
+                    return null;
+                }
+            });
+        } else {
+            promise.reject("No Device", new Exception("No Device"));
         }
     }
 }

@@ -72,3 +72,5 @@
 -dontwarn lombok.**
 -dontwarn com.samsung.multiscreen.BuildConfig
 -dontwarn javax.jmdns.impl.DNSCache
+
+-keep class com.connectsdk.**       { * ; }

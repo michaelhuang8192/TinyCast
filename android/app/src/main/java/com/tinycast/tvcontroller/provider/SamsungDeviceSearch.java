@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.samsung.multiscreen.Error;
+import com.samsung.multiscreen.Player;
 import com.samsung.multiscreen.Result;
 import com.samsung.multiscreen.Search;
 import com.samsung.multiscreen.Service;
@@ -14,8 +15,14 @@ import com.tinycast.helper.FunctionCallResult;
 import com.tinycast.tvcontroller.SmartDevice;
 import com.tinycast.tvcontroller.SmartDeviceSearch;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class SamsungDeviceSearch implements SmartDeviceSearch {
@@ -74,11 +81,12 @@ public class SamsungDeviceSearch implements SmartDeviceSearch {
         bgWorker.shutdown();
     }
 
-    static class SamsungSmartDevice implements SmartDevice {
+    static class SamsungSmartDevice implements SmartDevice, VideoPlayer.OnVideoPlayerListener {
         private Service service;
         private VideoPlayer player;
         private ExecutorService bgWorker;
         private boolean hasNotPlayYet = false;
+        private Map<String, Object> playerStatus;
 
         SamsungSmartDevice(Service service) {
             this.service = service;
@@ -91,7 +99,7 @@ public class SamsungDeviceSearch implements SmartDeviceSearch {
 
         @Override
         public String getName() {
-            return service.getName();
+            return String.format("%s [S]", service.getName());
         }
 
         @Override
@@ -129,6 +137,7 @@ public class SamsungDeviceSearch implements SmartDeviceSearch {
         public void disconnect() {
             ExecutorService bgWorker_ = bgWorker;
             if(bgWorker_ == null) return;
+            bgWorker = null;
 
             bgWorker_.submit(new Runnable() {
                 @Override
@@ -151,6 +160,8 @@ public class SamsungDeviceSearch implements SmartDeviceSearch {
                 @Override
                 public void run() {
                     player = service.createVideoPlayer("DMP");
+                    playerStatus = new HashMap<>();
+                    player.addOnMessageListener(SamsungSmartDevice.this);
                     hasNotPlayYet = true;
                 }
             });
@@ -187,5 +198,267 @@ public class SamsungDeviceSearch implements SmartDeviceSearch {
             return false;
         }
 
+        @Override
+        public void play(final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            if(bgWorker == null) {
+                cb.callOnce(FunctionCallResult.asResult(false));
+                return;
+            }
+
+            bgWorker.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        player.play();
+                        cb.callOnce(FunctionCallResult.asResult(true));
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void pause(final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            if(bgWorker == null) {
+                cb.callOnce(FunctionCallResult.asResult(false));
+                return;
+            }
+
+            bgWorker.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        player.pause();
+                        cb.callOnce(FunctionCallResult.asResult(true));
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void seek(final Integer position, final FunctionCall<Void, FunctionCallResult<Boolean>> cb) {
+            if(bgWorker == null) {
+                cb.callOnce(FunctionCallResult.asResult(false));
+                return;
+            }
+
+            bgWorker.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        player.seekTo(position, TimeUnit.SECONDS);
+                        cb.callOnce(FunctionCallResult.asResult(true));
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Boolean>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void getStatus(final FunctionCall<Void, FunctionCallResult<Map<String, Object>>> cb) {
+            if(bgWorker == null) {
+                cb.callOnce(FunctionCallResult.<Map<String, Object>>asError(new Exception("SG: Invalid Device")));
+                return;
+            }
+
+            bgWorker.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        cb.callOnce(FunctionCallResult.asResult(playerStatus));
+                    } catch(Exception e) {
+                        cb.callOnce(FunctionCallResult.<Map<String, Object>>asError(e));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onBufferingStart() {
+
+        }
+
+        @Override
+        public void onBufferingComplete() {
+
+        }
+
+        @Override
+        public void onBufferingProgress(int i) {
+
+        }
+
+        @Override
+        public void onCurrentPlayTime(final int i) {
+            if(bgWorker != null) {
+                bgWorker.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playerStatus != null)
+                            playerStatus.put("position", i / 1000);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onStreamingStarted(final int i) {
+            if(bgWorker != null) {
+                bgWorker.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playerStatus != null) {
+                            playerStatus.put("state", "playing");
+                            playerStatus.put("duration", i / 1000);
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onStreamCompleted() {
+
+        }
+
+        @Override
+        public void onPlayerInitialized() {
+
+        }
+
+        @Override
+        public void onPlayerChange(String s) {
+
+        }
+
+        @Override
+        public void onPlay() {
+            if(bgWorker != null) {
+                bgWorker.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playerStatus != null) {
+                            Object origState = playerStatus.get("state");
+                            playerStatus.put("state", origState != null && "playing".equalsIgnoreCase(origState.toString()) ? "paused" : "playing");
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onPause() {
+            if(bgWorker != null) {
+                bgWorker.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playerStatus != null)
+                            playerStatus.put("state", "paused");
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onStop() {
+            if(bgWorker != null) {
+                bgWorker.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (playerStatus != null)
+                            playerStatus.put("state", "stop");
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onForward() {
+
+        }
+
+        @Override
+        public void onRewind() {
+
+        }
+
+        @Override
+        public void onMute() {
+
+        }
+
+        @Override
+        public void onUnMute() {
+
+        }
+
+        @Override
+        public void onNext() {
+
+        }
+
+        @Override
+        public void onPrevious() {
+
+        }
+
+        @Override
+        public void onControlStatus(int i, Boolean aBoolean, Player.RepeatMode repeatMode) {
+
+        }
+
+        @Override
+        public void onVolumeChange(int i) {
+
+        }
+
+        @Override
+        public void onAddToList(JSONObject jsonObject) {
+
+        }
+
+        @Override
+        public void onRemoveFromList(JSONObject jsonObject) {
+
+        }
+
+        @Override
+        public void onClearList() {
+
+        }
+
+        @Override
+        public void onGetList(JSONArray jsonArray) {
+
+        }
+
+        @Override
+        public void onRepeat(Player.RepeatMode repeatMode) {
+
+        }
+
+        @Override
+        public void onCurrentPlaying(JSONObject jsonObject, String s) {
+
+        }
+
+        @Override
+        public void onApplicationResume() {
+
+        }
+
+        @Override
+        public void onApplicationSuspend() {
+
+        }
+
+        @Override
+        public void onError(Error error) {
+
+        }
     }
 }

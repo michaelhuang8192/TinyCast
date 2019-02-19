@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.tinycast.helper.FunctionCall;
 import com.tinycast.tvcontroller.provider.ChromeCastSearch;
+import com.tinycast.tvcontroller.provider.ConnectSDKSearch;
 import com.tinycast.tvcontroller.provider.SamsungDeviceSearch;
 
 
@@ -53,7 +54,8 @@ public class SmartTvController {
     private SmartDeviceSearch[] getSmartDeviceSearchList() {
         return new SmartDeviceSearch[] {
                 new SamsungDeviceSearch(context),
-                new ChromeCastSearch(context)
+                new ChromeCastSearch(context),
+                new ConnectSDKSearch(context)
         };
     }
 }

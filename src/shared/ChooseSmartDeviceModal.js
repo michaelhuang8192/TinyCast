@@ -45,10 +45,11 @@ class CastDeviceControl extends React.Component {
 		var _statusUpdater = this._statusUpdater;
 		return RNSmartTvController.getPlayerStatus()
 		.then(status => {
+			console.log(">>>>status", status);
 			if(_statusUpdater !== this._statusUpdater || this.unmounted || !status) return;
 			if(this._startDragging) return;
 
-			console.log(">>>", status);
+			//console.log(">>>", status);
 			this.setState({
 				isPlaying: status.state === 'playing',
 				position: status.position || 0,
